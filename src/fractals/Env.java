@@ -139,7 +139,7 @@ public class Env {
     /**
      * Logs the given text with the given log level.
      *
-     * @param level log level
+     * @param level   log level
      * @param message text to log
      */
 
