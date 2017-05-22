@@ -26,22 +26,23 @@ public abstract class RasterFractalBuilder<F extends RasterFractal> extends Abst
     private Integer maxIters;
 
     // shared
-    private List<UserTransition<RasterFractalBuilder<RasterFractal>>> allTransitions;
-    private CommonTransitions<RasterFractalBuilder<RasterFractal>> commonTransitions;
+    private List<UserTransition> allTransitions;
+    private CommonTransitions commonTransitions;
 
-    private static final class MoveRelativeX extends SingleValueTransition<RasterFractalBuilder<RasterFractal>> {
+    private static final class MoveRelativeX extends SingleValueTransition {
 
         private MoveRelativeX(BigDecimal value) {
             super(value);
         }
 
         @Override
-        public SingleValueTransition<RasterFractalBuilder<RasterFractal>> getSame(BigDecimal amount) {
+        public SingleValueTransition getSame(BigDecimal amount) {
             return new MoveRelativeX(amount);
         }
 
         @Override
-        public void run(RasterFractalBuilder<RasterFractal> fractal, View view) {
+        public void run(FractalBuilder fractalBuilder, View view) {
+            RasterFractalBuilder fractal = (RasterFractalBuilder) fractalBuilder;
             MathContext mctx = Env.instance().getMathContext();
             BigDecimal moveAbsoluteX = getValue().multiply(fractal.getWidth(), mctx);
             BigDecimal newX = fractal.getX().add(moveAbsoluteX.multiply(fractal.getCosAngle(), mctx), mctx);
@@ -52,19 +53,20 @@ public abstract class RasterFractalBuilder<F extends RasterFractal> extends Abst
 
     }
 
-    private static final class MoveRelativeY extends SingleValueTransition<RasterFractalBuilder<RasterFractal>> {
+    private static final class MoveRelativeY extends SingleValueTransition {
 
         private MoveRelativeY(BigDecimal value) {
             super(value);
         }
 
         @Override
-        public SingleValueTransition<RasterFractalBuilder<RasterFractal>> getSame(BigDecimal amount) {
+        public SingleValueTransition getSame(BigDecimal amount) {
             return new MoveRelativeY(amount);
         }
 
         @Override
-        public void run(RasterFractalBuilder<RasterFractal> fractal, View view) {
+        public void run(FractalBuilder fractalBuilder, View view) {
+            RasterFractalBuilder fractal = (RasterFractalBuilder) fractalBuilder;
             MathContext mctx = Env.instance().getMathContext();
             BigDecimal viewWidth = FractalMath.getBigDecimal(view.getWidth());
             BigDecimal viewHeight = FractalMath.getBigDecimal(view.getHeight());
@@ -76,26 +78,27 @@ public abstract class RasterFractalBuilder<F extends RasterFractal> extends Abst
 
     }
 
-    private static final class Zoom extends SingleValueTransition<RasterFractalBuilder<RasterFractal>> {
+    private static final class Zoom extends SingleValueTransition {
 
         private Zoom(BigDecimal value) {
             super(value);
         }
 
         @Override
-        public SingleValueTransition<RasterFractalBuilder<RasterFractal>> getSame(BigDecimal amount) {
+        public SingleValueTransition getSame(BigDecimal amount) {
             return new Zoom(amount);
         }
 
         @Override
-        public void run(RasterFractalBuilder<RasterFractal> fractal, View view) {
+        public void run(FractalBuilder fractalBuilder, View view) {
+            RasterFractalBuilder fractal = (RasterFractalBuilder) fractalBuilder;
             fractal.setWidth(fractal.getWidth().divide(getValue(), Env.instance().getMathContext()));
         }
 
         @Override
-        public List<Transition<RasterFractalBuilder<RasterFractal>>> split(int steps) {
-            List<Transition<RasterFractalBuilder<RasterFractal>>> result = new ArrayList<>(steps);
-            Transition<RasterFractalBuilder<RasterFractal>> stepTransition = getSame(
+        public List<Transition> split(int steps) {
+            List<Transition> result = new ArrayList<>(steps);
+            Transition stepTransition = getSame(
                     new BigDecimal(Math.pow(getValue().doubleValue(), 1.0 / steps), Env.instance().getMathContext()));
             for (int i = 0; i < steps; i++) {
                 result.add(stepTransition);
@@ -105,37 +108,39 @@ public abstract class RasterFractalBuilder<F extends RasterFractal> extends Abst
 
     }
 
-    private static final class Rotate extends SingleValueTransition<RasterFractalBuilder<RasterFractal>> {
+    private static final class Rotate extends SingleValueTransition {
 
         private Rotate(BigDecimal value) {
             super(value);
         }
 
         @Override
-        public SingleValueTransition<RasterFractalBuilder<RasterFractal>> getSame(BigDecimal amount) {
+        public SingleValueTransition getSame(BigDecimal amount) {
             return new Rotate(amount);
         }
 
         @Override
-        public void run(RasterFractalBuilder<RasterFractal> fractal, View view) {
+        public void run(FractalBuilder fractalBuilder, View view) {
+            RasterFractalBuilder fractal = (RasterFractalBuilder) fractalBuilder;
             fractal.setAngle(fractal.getAngle().add(getValue(), Env.instance().getMathContext()));
         }
 
     }
 
-    private static final class AdjustMaxIters extends SingleValueTransition<RasterFractalBuilder<RasterFractal>> {
+    private static final class AdjustMaxIters extends SingleValueTransition {
 
         private AdjustMaxIters(BigDecimal value) {
             super(value);
         }
 
         @Override
-        public SingleValueTransition<RasterFractalBuilder<RasterFractal>> getSame(BigDecimal amount) {
+        public SingleValueTransition getSame(BigDecimal amount) {
             return new AdjustMaxIters(amount);
         }
 
         @Override
-        public void run(RasterFractalBuilder<RasterFractal> fractal, View view) {
+        public void run(FractalBuilder fractalBuilder, View view) {
+            RasterFractalBuilder fractal = (RasterFractalBuilder) fractalBuilder;
             long value = getValue().multiply(FractalMath.getBigDecimal(fractal.getMaxIters()), Env.instance().getMathContext())
                     .longValue();
             if (value > 0 && value < Integer.MAX_VALUE) {
@@ -144,9 +149,9 @@ public abstract class RasterFractalBuilder<F extends RasterFractal> extends Abst
         }
 
         @Override
-        public List<Transition<RasterFractalBuilder<RasterFractal>>> split(int steps) {
-            List<Transition<RasterFractalBuilder<RasterFractal>>> result = new ArrayList<>(steps);
-            Transition<RasterFractalBuilder<RasterFractal>> stepTransition = getSame(
+        public List<Transition> split(int steps) {
+            List<Transition> result = new ArrayList<>(steps);
+            Transition stepTransition = getSame(
                     new BigDecimal(Math.pow(getValue().doubleValue(), 1.0 / steps), Env.instance().getMathContext()));
             for (int i = 0; i < steps; i++) {
                 result.add(stepTransition);
@@ -166,29 +171,29 @@ public abstract class RasterFractalBuilder<F extends RasterFractal> extends Abst
     }
 
     public RasterFractalBuilder() {
-        UserTransition<RasterFractalBuilder<RasterFractal>> moveLeft = new UserTransition<>(
+        UserTransition moveLeft = new UserTransition(
                 new MoveRelativeX(new BigDecimal("-0.125")), "Left", "Move left~4");
-        UserTransition<RasterFractalBuilder<RasterFractal>> moveRight = new UserTransition<>(
+        UserTransition moveRight = new UserTransition(
                 new MoveRelativeX(new BigDecimal("0.125")), "Right", "Move right~6");
-        UserTransition<RasterFractalBuilder<RasterFractal>> moveUp = new UserTransition<>(
+        UserTransition moveUp = new UserTransition(
                 new MoveRelativeY(new BigDecimal("-0.125")), "Up", "Move up~8");
-        UserTransition<RasterFractalBuilder<RasterFractal>> moveDown = new UserTransition<>(
+        UserTransition moveDown = new UserTransition(
                 new MoveRelativeY(new BigDecimal("0.125")), "Down", "Move down~2");
-        UserTransition<RasterFractalBuilder<RasterFractal>> zoomIn = new UserTransition<>(new Zoom(new BigDecimal("1.25")),
+        UserTransition zoomIn = new UserTransition(new Zoom(new BigDecimal("1.25")),
                 "ZoomIn", "Zoom in~+");
-        UserTransition<RasterFractalBuilder<RasterFractal>> zoomOut = new UserTransition<>(new Zoom(new BigDecimal("0.8")),
+        UserTransition zoomOut = new UserTransition(new Zoom(new BigDecimal("0.8")),
                 "ZoomOut", "Zoom out~-");
         BigDecimal deltaAngle = new BigDecimal(Math.PI / 12.0, Env.instance().getMathContext());
-        UserTransition<RasterFractalBuilder<RasterFractal>> rotate = new UserTransition<>(
+        UserTransition rotate = new UserTransition(
                 new Rotate(new BigDecimal(deltaAngle.negate().toString())), "Rotate", "Rotate~9");
-        UserTransition<RasterFractalBuilder<RasterFractal>> rotateBack = new UserTransition<>(
+        UserTransition rotateBack = new UserTransition(
                 new Rotate(new BigDecimal(deltaAngle.toString())), "RotateBack", "Rotate back~7");
-        UserTransition<RasterFractalBuilder<RasterFractal>> increaseIter = new UserTransition<>(
+        UserTransition increaseIter = new UserTransition(
                 new AdjustMaxIters(new BigDecimal("1.25")), "IncreaseIter", "Increase maximum iterations~*");
-        UserTransition<RasterFractalBuilder<RasterFractal>> decreaseIter = new UserTransition<>(
+        UserTransition decreaseIter = new UserTransition(
                 new AdjustMaxIters(new BigDecimal("0.80")), "DecreaseIter", "Decrease maximum iterations~/");
 
-        List<UserTransition<RasterFractalBuilder<RasterFractal>>> transitions = new ArrayList<>();
+        List<UserTransition> transitions = new ArrayList<>();
         transitions.add(moveLeft);
         transitions.add(moveRight);
         transitions.add(moveUp);
@@ -201,45 +206,43 @@ public abstract class RasterFractalBuilder<F extends RasterFractal> extends Abst
         transitions.add(decreaseIter);
         allTransitions = Collections.unmodifiableList(transitions);
 
-        commonTransitions = new CommonTransitions<RasterFractalBuilder<RasterFractal>>() {
+        commonTransitions = new CommonTransitions() {
             @Override
-            public SingleValueTransition<RasterFractalBuilder<RasterFractal>> getZoomOut() {
-                return (SingleValueTransition<RasterFractalBuilder<RasterFractal>>) zoomOut.getTransition();
+            public SingleValueTransition getZoomOut() {
+                return (SingleValueTransition) zoomOut.getTransition();
             }
 
             @Override
-            public SingleValueTransition<RasterFractalBuilder<RasterFractal>> getZoomIn() {
-                return (SingleValueTransition<RasterFractalBuilder<RasterFractal>>) zoomIn.getTransition();
+            public SingleValueTransition getZoomIn() {
+                return (SingleValueTransition) zoomIn.getTransition();
             }
 
             @Override
-            public SingleValueTransition<RasterFractalBuilder<RasterFractal>> getRotate() {
-                return (SingleValueTransition<RasterFractalBuilder<RasterFractal>>) rotate.getTransition();
+            public SingleValueTransition getRotate() {
+                return (SingleValueTransition) rotate.getTransition();
             }
 
             @Override
-            public SingleValueTransition<RasterFractalBuilder<RasterFractal>> getMoveSecondaryAxis() {
-                return (SingleValueTransition<RasterFractalBuilder<RasterFractal>>) moveDown.getTransition();
+            public SingleValueTransition getMoveSecondaryAxis() {
+                return (SingleValueTransition) moveDown.getTransition();
             }
 
             @Override
-            public SingleValueTransition<RasterFractalBuilder<RasterFractal>> getMovePrimaryAxis() {
-                return (SingleValueTransition<RasterFractalBuilder<RasterFractal>>) moveRight.getTransition();
+            public SingleValueTransition getMovePrimaryAxis() {
+                return (SingleValueTransition) moveRight.getTransition();
             }
 
         };
     }
 
     @Override
-    public List<UserTransition<? extends FractalBuilder<? extends F>>> getTransitions() {
-        return Collections.unmodifiableList(Collections.emptyList());
-        //return allTransitions;
+    public List<UserTransition> getTransitions() {
+        return allTransitions;
     }
 
     @Override
-    public CommonTransitions<? extends FractalBuilder<? extends F>> getCommonTransitions() {
-        return null;
-        //return (CommonTransitions<? extends FractalBuilder<? extends F>>) commonTransitions;
+    public CommonTransitions getCommonTransitions() {
+        return commonTransitions;
     }
 
     public BigDecimal getX() {

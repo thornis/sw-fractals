@@ -11,38 +11,40 @@ public class JuliaSetBuilder extends RasterFractalBuilder<JuliaSet> {
     @Parameter.Marker(order = "101", description = "Imag const (Ci)")
     private BigDecimal ci;
 
-    static class ChangeCr extends SingleValueTransition<JuliaSetBuilder> {
+    static class ChangeCr extends SingleValueTransition {
 
         private ChangeCr(BigDecimal value) {
             super(value);
         }
 
         @Override
-        public SingleValueTransition<JuliaSetBuilder> getSame(BigDecimal amount) {
+        public SingleValueTransition getSame(BigDecimal amount) {
             return new ChangeCr(amount);
         }
 
         @Override
-        public void run(JuliaSetBuilder set, View view) {
+        public void run(FractalBuilder b, View view) {
+            JuliaSetBuilder set = (JuliaSetBuilder) b;
             MathContext mctx = Env.instance().getMathContext();
             set.setCr(set.getCr().add(getValue().multiply(set.getCr(), mctx), mctx));
         }
 
     }
 
-    static class ChangeCi extends SingleValueTransition<JuliaSetBuilder> {
+    static class ChangeCi extends SingleValueTransition {
 
         private ChangeCi(BigDecimal value) {
             super(value);
         }
 
         @Override
-        public SingleValueTransition<JuliaSetBuilder> getSame(BigDecimal amount) {
+        public SingleValueTransition getSame(BigDecimal amount) {
             return new ChangeCi(amount);
         }
 
         @Override
-        public void run(JuliaSetBuilder set, View view) {
+        public void run(FractalBuilder b, View view) {
+            JuliaSetBuilder set = (JuliaSetBuilder) b;
             MathContext mctx = Env.instance().getMathContext();
             set.setCi(set.getCi().add(getValue().multiply(set.getCr(), mctx), mctx));
         }
@@ -68,8 +70,9 @@ public class JuliaSetBuilder extends RasterFractalBuilder<JuliaSet> {
     @Override
     public void init() {
         setMaxIters(200);
-        setCi(new BigDecimal("-0.400"));
+        setCr(new BigDecimal("-0.400"));
         setCi(new BigDecimal("0.600"));
+        setAngle(BigDecimal.ZERO);
     }
 
     @Override

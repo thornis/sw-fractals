@@ -12,15 +12,15 @@ final class TransitionAction extends FractalAction {
     private static final long serialVersionUID = 1L;
 
     private final FractalExplorer explorer;
-    private UserTransition<? extends FractalBuilder> transition;
+    private UserTransition transition;
 
-    TransitionAction(FractalExplorer explorer, UserTransition<? extends FractalBuilder> transition) {
+    TransitionAction(FractalExplorer explorer, UserTransition transition) {
         super(transition.getId(), transition.getName(), getKeyStroke(explorer, transition));
         this.explorer = explorer;
         this.transition = transition;
     }
 
-    UserTransition<? extends FractalBuilder> getTransition() {
+    UserTransition getTransition() {
         return transition;
     }
 
@@ -30,7 +30,7 @@ final class TransitionAction extends FractalAction {
                 .add(new TransitionStep<>(transition.getTransition(), 250L, Env.instance().currentTimeMillis()), true);
     }
 
-    private static KeyStroke getKeyStroke(FractalExplorer explorer, UserTransition<? extends FractalBuilder> transition) {
+    private static KeyStroke getKeyStroke(FractalExplorer explorer, UserTransition transition) {
         char shortcut = transition.getPreferredKeyShortcut();
         if (shortcut == 0) {
             return explorer.getNextAvailableShortcut();

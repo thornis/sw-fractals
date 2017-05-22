@@ -240,10 +240,10 @@ public final class FractalExplorer extends JFrame implements FractalUI {
                 }
             }
 
-            List<UserTransition<? extends FractalBuilder>> newTransitions = fractalBuilder.getTransitions();
-            List<UserTransition<? extends FractalBuilder>> currentTransitions = new ArrayList<>(newTransitions.size());
+            List<UserTransition> newTransitions = fractalBuilder.getTransitions();
+            List<UserTransition> currentTransitions = new ArrayList<>(newTransitions.size());
             for (int componentCount = toolBar.getComponentCount(), i = 0; i < componentCount; i++) {
-                UserTransition<? extends FractalBuilder> transition = toolBar.getTransition(toolBar.getComponent(i));
+                UserTransition transition = toolBar.getTransition(toolBar.getComponent(i));
                 if (transition != null) {
                     currentTransitions.add(transition);
                 }
@@ -254,8 +254,8 @@ public final class FractalExplorer extends JFrame implements FractalUI {
                         toolBar.remove(component);
                     }
                 }
-                List<UserTransition<? extends FractalBuilder>> transitions = fractalBuilder.getTransitions();
-                for (UserTransition<? extends FractalBuilder> transition : transitions) {
+                List<UserTransition> transitions = fractalBuilder.getTransitions();
+                for (UserTransition transition : transitions) {
                     toolBar.add(new TransitionAction(this, transition));
                 }
                 toolBar.repaint();

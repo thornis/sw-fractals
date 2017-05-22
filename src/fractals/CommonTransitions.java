@@ -1,15 +1,15 @@
 package fractals;
 
-public interface CommonTransitions<B extends FractalBuilder<? extends Fractal>> {
+public interface CommonTransitions {
 
-    SingleValueTransition<B> getMovePrimaryAxis();
+    SingleValueTransition getMovePrimaryAxis();
 
-    SingleValueTransition<B> getMoveSecondaryAxis();
+    SingleValueTransition getMoveSecondaryAxis();
 
-    SingleValueTransition<B> getZoomIn();
+    SingleValueTransition getZoomIn();
 
-    SingleValueTransition<B> getZoomOut();
+    SingleValueTransition getZoomOut();
 
-    SingleValueTransition<B> getRotate();
+    SingleValueTransition getRotate();
 
 }

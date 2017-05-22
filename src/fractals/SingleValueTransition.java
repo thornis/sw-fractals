@@ -6,11 +6,9 @@ import java.util.List;
 
 /**
  * Base class for {@link Transition} implementations that change one parameter.
- *
- * @param <B> the fractal type
  */
 
-public abstract class SingleValueTransition<B extends FractalBuilder<?>> implements Transition<B> {
+public abstract class SingleValueTransition implements Transition {
     private final BigDecimal value;
 
     /**
@@ -49,12 +47,12 @@ public abstract class SingleValueTransition<B extends FractalBuilder<?>> impleme
      * @return the same transition, scaled to value
      */
 
-    public abstract SingleValueTransition<B> getSame(BigDecimal amount);
+    public abstract SingleValueTransition getSame(BigDecimal amount);
 
     @Override
-    public List<Transition<B>> split(int steps) {
-        List<Transition<B>> result = new ArrayList<>(steps);
-        Transition<B> stepTransition = getSame(
+    public List<Transition> split(int steps) {
+        List<Transition> result = new ArrayList<>(steps);
+        Transition stepTransition = getSame(
                 getValue().divide(FractalMath.getBigDecimal(steps), Env.instance().getMathContext()));
         for (int i = 0; i < steps; i++) {
             // TODO exact last step

@@ -5,12 +5,12 @@ import fractals.Transition;
 import fractals.View;
 
 public class TransitionStep<B extends FractalBuilder<?>> implements Step<B> {
-    private Transition<B> transition;
+    private Transition transition;
 
     private long duration;
     private long plannedStartTime;
 
-    public TransitionStep(Transition<B> transition, long duration, long plannedStartTime) {
+    public TransitionStep(Transition transition, long duration, long plannedStartTime) {
         this.transition = transition;
         this.duration = duration;
         this.plannedStartTime = plannedStartTime;
@@ -26,11 +26,11 @@ public class TransitionStep<B extends FractalBuilder<?>> implements Step<B> {
         return plannedStartTime;
     }
 
-    public TransitionStep(Transition<B> transition) {
+    public TransitionStep(Transition transition) {
         this.transition = transition;
     }
 
-    public Transition<B> getTransition() {
+    public Transition getTransition() {
         return transition;
     }
 

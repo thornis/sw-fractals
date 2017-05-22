@@ -6,12 +6,10 @@ import java.util.List;
 
 /**
  * Transition composed of multiple transitions.
- *
- * @param <B> fractal type
  */
 
-public final class TransitionSet<B extends FractalBuilder<?>> implements Transition<B> {
-    private List<Transition<B>> transitions;
+public final class TransitionSet implements Transition {
+    private List<Transition> transitions;
 
     /**
      * Creates a new instance.
@@ -20,7 +18,7 @@ public final class TransitionSet<B extends FractalBuilder<?>> implements Transit
      */
 
     @SafeVarargs
-    public TransitionSet(Transition<B>... transitions) {
+    public TransitionSet(Transition... transitions) {
         this.transitions = Arrays.asList(transitions);
     }
 
@@ -30,8 +28,8 @@ public final class TransitionSet<B extends FractalBuilder<?>> implements Transit
     }
 
     @Override
-    public void run(B fractalBuilder, View view) {
-        for (Transition<B> transition : transitions) {
+    public void run(FractalBuilder fractalBuilder, View view) {
+        for (Transition transition : transitions) {
             if (transition != null) {
                 transition.run(fractalBuilder, view);
             }
@@ -39,8 +37,8 @@ public final class TransitionSet<B extends FractalBuilder<?>> implements Transit
     }
 
     @Override
-    public List<Transition<B>> split(int steps) {
-        List<Transition<B>> result = new ArrayList<>(steps);
+    public List<Transition> split(int steps) {
+        List<Transition> result = new ArrayList<>(steps);
         return result;
     }
 

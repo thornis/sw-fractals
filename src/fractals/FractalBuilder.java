@@ -8,9 +8,9 @@ public interface FractalBuilder<F extends Fractal> {
 
     List<Parameter> getParameters();
 
-    List<UserTransition<? extends FractalBuilder<? extends F>>> getTransitions();
+    List<UserTransition> getTransitions();
 
-    CommonTransitions<? extends FractalBuilder<? extends F>> getCommonTransitions();
+    CommonTransitions getCommonTransitions();
 
     F getFractal();
 

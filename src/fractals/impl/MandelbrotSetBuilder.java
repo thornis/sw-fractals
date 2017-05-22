@@ -11,6 +11,7 @@ public class MandelbrotSetBuilder extends RasterFractalBuilder<MandelbrotSet> {
         setX(new BigDecimal("-0.5"));
         setY(new BigDecimal("0.0"));
         setWidth(new BigDecimal("3.0"));
+        setAngle(BigDecimal.ZERO);
         setMaxIters(100);
     }
 

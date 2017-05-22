@@ -49,7 +49,7 @@ final class FractalToolBar extends JToolBar {
         return button;
     }
 
-    UserTransition<? extends FractalBuilder> getTransition(Component component) {
+    UserTransition getTransition(Component component) {
         if (component instanceof JButton && ((JButton) component).getAction() instanceof TransitionAction) {
             return ((TransitionAction) ((JButton) component).getAction()).getTransition();
         }

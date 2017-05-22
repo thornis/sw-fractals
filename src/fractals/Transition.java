@@ -4,11 +4,9 @@ import java.util.List;
 
 /**
  * Base interface for transition - change of fractal.
- *
- * @param <B> the fractal type
  */
 
-public interface Transition<B extends FractalBuilder<?>> {
+public interface Transition {
 
     /**
      * Returns the transition type.
@@ -25,7 +23,7 @@ public interface Transition<B extends FractalBuilder<?>> {
      * @return list of transitions
      */
 
-    List<Transition<B>> split(int steps);
+    List<Transition> split(int steps);
 
     /**
      * Runs this transition for the given fractal.
@@ -34,6 +32,6 @@ public interface Transition<B extends FractalBuilder<?>> {
      * @param view           view
      */
 
-    void run(B fractalBuilder, View view);
+    void run(FractalBuilder fractalBuilder, View view);
 
 }

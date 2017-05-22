@@ -142,7 +142,7 @@ public abstract class AbstractFractalBuilder<F extends AbstractFractal> implemen
     }
 
     @Override
-    public List<UserTransition<? extends FractalBuilder<? extends F>>> getTransitions() {
+    public List<UserTransition> getTransitions() {
         return Collections.emptyList();
     }
 

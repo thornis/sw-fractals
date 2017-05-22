@@ -49,11 +49,11 @@ public class ProcessingQueue implements Runnable {
 
     public void add(TransitionStep<? extends FractalBuilder> step, boolean split) {
         if (split) {
-            Transition<? extends FractalBuilder> transition = step.getTransition();
+            Transition transition = step.getTransition();
             int steps = (int) (Env.instance().getPreferredFrameRate() * step.getDuration() / 1000);
-            List<? extends Transition<? extends FractalBuilder>> transitions = transition.split(steps);
+            List<? extends Transition> transitions = transition.split(steps);
             long time = step.getPlannedStartTime();
-            for (Transition<? extends FractalBuilder> partialTransition : transitions) {
+            for (Transition partialTransition : transitions) {
                 try {
                     queue.put(new TransitionStep<>(partialTransition, Env.instance().getFrameTime(), time));
                     time += Env.instance().getFrameTime();

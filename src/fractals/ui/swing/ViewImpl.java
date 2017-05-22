@@ -29,15 +29,15 @@ final class ViewImpl extends View {
             endTracing();
         }
 
-        private CommonTransitions<? extends FractalBuilder<Fractal>> getCommonTransitions() {
+        private CommonTransitions getCommonTransitions() {
             return explorer.getFractalBuilder().getCommonTransitions();
         }
 
         public void mouseWheelMoved(MouseWheelEvent e) {
-            CommonTransitions<? extends FractalBuilder<Fractal>> ct = getCommonTransitions();
+            CommonTransitions ct = getCommonTransitions();
             int rot = e.getWheelRotation();
             if (rot != 0) {
-                Transition<? extends FractalBuilder> transition = (rot > 0) ? ct.getZoomOut() : ct.getZoomIn();
+                Transition transition = (rot > 0) ? ct.getZoomOut() : ct.getZoomIn();
                 explorer.getProcessingQueue().add(new TransitionStep<>(transition, 250, Env.instance().currentTimeMillis()), true);
             }
         }
@@ -55,7 +55,7 @@ final class ViewImpl extends View {
             int dx = lastx - e.getXOnScreen();
             int dy = lasty - e.getYOnScreen();
 
-            CommonTransitions<? extends FractalBuilder<Fractal>> ct = getCommonTransitions();
+            CommonTransitions ct = getCommonTransitions();
             if (SwingUtilities.isLeftMouseButton(e)) {
                 explorer.getProcessingQueue().add(getMoveStep(dx, dy, time), false);
             } else if (SwingUtilities.isRightMouseButton(e) && dx != 0) {
@@ -69,11 +69,11 @@ final class ViewImpl extends View {
         }
 
         private TransitionStep<? extends FractalBuilder<Fractal>> getMoveStep(int dx, int dy, long time) {
-            CommonTransitions<? extends FractalBuilder<Fractal>> ct = getCommonTransitions();
+            CommonTransitions ct = getCommonTransitions();
             if (dx != 0 && dy != 0) {
-                Transition<? extends FractalBuilder<Fractal>> t1 = ct.getMovePrimaryAxis().getSame(FractalMath.divide(dx, getWidth()));
-                Transition<? extends FractalBuilder<Fractal>> t2 = ct.getMoveSecondaryAxis().getSame(FractalMath.divide(dy, getHeight()));
-                return (TransitionStep<? extends FractalBuilder<Fractal>>) new TransitionStep<>(new TransitionSet(t1, t2));
+                Transition t1 = ct.getMovePrimaryAxis().getSame(FractalMath.divide(dx, getWidth()));
+                Transition t2 = ct.getMoveSecondaryAxis().getSame(FractalMath.divide(dy, getHeight()));
+                return (TransitionStep) new TransitionStep<>(new TransitionSet(t1, t2));
             } else if (dx != 0) {
                 return new TransitionStep<>(ct.getMovePrimaryAxis().getSame(FractalMath.divide(dx, getWidth())));
             } else {
