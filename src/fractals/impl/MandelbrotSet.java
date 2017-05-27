@@ -70,11 +70,11 @@ public class MandelbrotSet extends RasterFractal {
 
     @Override
     public StandardRasterRenderer<MandelbrotSet> getRenderer() {
-        // if (getWidth().doubleValue() > 0.0001) {
-        return new Renderer(Double.TYPE);
-        // } else {
-        // return new Renderer(Double.TYPE);
-        // }
+        if (getWidth().doubleValue() < 0.025) {
+            return new Renderer(Double.TYPE);
+        } else {
+            return new Renderer(Float.TYPE);
+        }
     }
 
 }
