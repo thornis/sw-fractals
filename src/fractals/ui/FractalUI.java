@@ -12,6 +12,6 @@ public interface FractalUI {
 
     View getView();
 
-    void setFractal(Fractal fractal, boolean render, boolean preview, boolean buildui, boolean refreshParamsAndTransitions);
+    void setFractal(FractalBuilder fractalBuilder, boolean render, boolean preview, boolean buildui, boolean refreshParamsAndTransitions);
 
 }

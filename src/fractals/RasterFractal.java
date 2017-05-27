@@ -2,16 +2,12 @@ package fractals;
 
 import java.math.BigDecimal;
 
-public abstract class RasterFractal extends AbstractFractal {
+public abstract class RasterFractal implements Fractal {
     private BigDecimal x;
     private BigDecimal y;
     private BigDecimal width;
     private BigDecimal angle;
     private Integer maxIters;
-
-    public RasterFractal(String x, String y, String width, Integer maxIters) {
-        this(new BigDecimal(x), new BigDecimal(y), new BigDecimal(width), BigDecimal.ZERO, maxIters);
-    }
 
     public RasterFractal(BigDecimal x, BigDecimal y, BigDecimal width, BigDecimal angle, Integer maxIters) {
         this.x = x;

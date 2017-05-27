@@ -38,7 +38,7 @@ public class ProcessingQueue implements Runnable {
                 TransitionStep<? extends FractalBuilder> nextStep = queue.peek();
                 boolean canSkip = nextStep != null && nextStep.getPlannedStartTime() < currentTime;
                 step.run(explorer.getFractalBuilder(), explorer.getView());
-                explorer.setFractal(explorer.getFractalBuilder().getFractal(), !canSkip, nextStep != null, false, nextStep == null);
+                explorer.setFractal(explorer.getFractalBuilder(), !canSkip, nextStep != null, false, nextStep == null);
             }
         } catch (InterruptedException ex) {
             // ignore

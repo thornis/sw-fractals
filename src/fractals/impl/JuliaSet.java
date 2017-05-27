@@ -35,34 +35,10 @@ public class JuliaSet extends RasterFractal {
 
     }
 
-    /**
-     * Creates a new instamce.
-     *
-     * @param maxIters maximum iteraction
-     * @param cr       the CR value
-     * @param ci       the CI value
-     */
-
-    public JuliaSet(Integer maxIters, String cr, String ci) {
-        this("0.0", "0.0", "4.0", cr, ci, maxIters);
-    }
-
-    private JuliaSet(String x, String y, String width, String cr, String ci, Integer maxIters) {
-        super(x, y, width, maxIters);
-        this.cr = new BigDecimal(cr.trim());
-        this.ci = new BigDecimal(ci.trim());
-    }
-
-    @Override
-    public String getName() {
-        return "Julia set [" + cr + ',' + ci + ']';
-    }
-
-    @Override
-    public String getDescription() {
-        return "<html><p><b>Julia set</b> is defined by the following iteration:</p>" + //
-                "<p></p><p><b>z<sub>n+1</sub> = z<sub>n</sub> * z<sub>n</sub> + c</b></p>" + //
-                "</html>";
+    public JuliaSet(BigDecimal x, BigDecimal y, BigDecimal width, BigDecimal angle, BigDecimal cr, BigDecimal ci, Integer maxIters) {
+        super(x, y, width, angle, maxIters);
+        this.cr = cr;
+        this.ci = ci;
     }
 
     public BigDecimal getCr() {

@@ -77,7 +77,14 @@ public class JuliaSetBuilder extends RasterFractalBuilder<JuliaSet> {
 
     @Override
     public JuliaSet getFractal() {
-        return new JuliaSet(getMaxIters(), getCr().toString(), getCi().toString());
+        return new JuliaSet(getX(), getY(), getWidth(), getAngle(), getCr(), getCi(), getMaxIters());
+    }
+
+    @Override
+    public String getDescription() {
+        return "<html><p><b>Julia set</b> is defined by the following iteration:</p>" + //
+                "<p></p><p><b>z<sub>n+1</sub> = z<sub>n</sub> * z<sub>n</sub> + c</b></p>" + //
+                "</html>";
     }
 
 //	@Override

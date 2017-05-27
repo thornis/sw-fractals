@@ -27,13 +27,13 @@ public class FractalRegistry {
         return INSTANCE;
     }
 
-    private List<FractalBuilder> fractals;
+    private List<FractalBuilder> fractalBuilders;
     private List<Filter> palettes;
 
     private FractalRegistry() {
-        fractals = new ArrayList<>();
-        fractals.add(new MandelbrotSetBuilder());
-        fractals.add(new JuliaSetBuilder());
+        fractalBuilders = new ArrayList<>();
+        fractalBuilders.add(new MandelbrotSetBuilder());
+        fractalBuilders.add(new JuliaSetBuilder());
         palettes = Arrays.asList(//
                 new DynamicPalette("Dynamic gray", 0xFFFFFF), //
                 new DynamicPalette("Dynamic red", 0xFF0000), //
@@ -44,13 +44,13 @@ public class FractalRegistry {
     }
 
     /**
-     * Returns the list of predefined fractals.
+     * Returns the list of predefined fractal builders.
      *
-     * @return list of predefined fractals
+     * @return list of predefined fractal builders
      */
 
-    public List<FractalBuilder> getFractals() {
-        return fractals;
+    public List<FractalBuilder> getFractalBuilders() {
+        return fractalBuilders;
     }
 
     /**

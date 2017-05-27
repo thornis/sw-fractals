@@ -16,8 +16,17 @@ public class MandelbrotSetBuilder extends RasterFractalBuilder<MandelbrotSet> {
     }
 
     @Override
-    public MandelbrotSet getFractal() {
-        return new MandelbrotSet(getX().toString(), getY().toString(), getWidth().toString(), getMaxIters());
+    public String getDescription() {
+        return "<html><p><b>Mandelbrot set</b> is defined by the following iteration:</p>" + //
+                "<p></p><p><b>z<sub>n+1</sub> = z<sub>n</sub> * z<sub>n</sub> + c</b></p>" + //
+                "</html>";
     }
+
+    @Override
+    public MandelbrotSet getFractal() {
+        return new MandelbrotSet(getX(), getY(), getWidth(), getAngle(), getMaxIters());
+    }
+
+
 
 }

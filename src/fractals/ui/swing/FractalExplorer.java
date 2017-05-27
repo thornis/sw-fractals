@@ -98,7 +98,7 @@ public final class FractalExplorer extends JFrame implements FractalUI {
         toolBar = new FractalToolBar();
         toolBar.setBorder(BorderFactory.createEmptyBorder(4, 6, 4, 6));
         JComboBox<FractalBuilder> fractalsCB = new JComboBox<>(
-                new Vector<FractalBuilder>(FractalRegistry.getInstance().getFractals()));
+                new Vector<FractalBuilder>(FractalRegistry.getInstance().getFractalBuilders()));
         fractalsCB.addActionListener(ae -> setFractal((FractalBuilder) fractalsCB.getSelectedItem()));
         toolBar.add(fractalsCB);
         toolBar.addGap(6);
@@ -130,7 +130,7 @@ public final class FractalExplorer extends JFrame implements FractalUI {
         modelToolBar.setBorder(BorderFactory.createEmptyBorder());
         modelToolBar.add(Box.createHorizontalGlue());
         modelToolBar.add("SetInitialModel", "Set initial model", KeyStroke.getKeyStroke('i'),
-                ae -> setFractal((Fractal) fractalsCB.getSelectedItem()));
+                ae -> setFractal((FractalBuilder) fractalsCB.getSelectedItem()));
         modelToolBar.add("UpdateModel", "Update model", KeyStroke.getKeyStroke('u'), ae -> uiToModel());
         modelToolBar.add("ExportImg", "Export image", KeyStroke.getKeyStroke('e'), ae -> exportImage());
         leftP.add(modelToolBar);
@@ -182,15 +182,11 @@ public final class FractalExplorer extends JFrame implements FractalUI {
     public void setFractal(FractalBuilder fractalBuilder) {
         this.fractalBuilder = fractalBuilder;
         fractalBuilder.init();
-        setFractal(fractalBuilder.getFractal());
+        setFractal(fractalBuilder, true, false, true, true);
     }
 
-    public void setFractal(Fractal fractal) {
-        setFractal(fractal, true, false, true, true);
-    }
-
-    public void setFractal(Fractal fractal, boolean render, boolean preview, boolean buildui, boolean refreshParamsAndTransitions) {
-        this.fractal = fractal;
+    public void setFractal(FractalBuilder fractalBuilder, boolean render, boolean preview, boolean buildui, boolean refreshParamsAndTransitions) {
+        this.fractal = fractalBuilder.getFractal();
 
         if (buildui) {
             availableShortcuts = new ArrayList<>();
@@ -199,9 +195,9 @@ public final class FractalExplorer extends JFrame implements FractalUI {
             availableShortcuts.add(KeyStroke.getKeyStroke("F3"));
             availableShortcuts.add(KeyStroke.getKeyStroke("F4"));
 
-            descriptionL.setText(fractal.getDescription());
-            descriptionL.setVisible(fractal.getDescription() != null);
-            descriptionL.getParent().getComponent(2).setVisible(fractal.getDescription() != null);
+            descriptionL.setText(fractalBuilder.getDescription());
+            descriptionL.setVisible(fractalBuilder.getDescription() != null);
+            descriptionL.getParent().getComponent(2).setVisible(fractalBuilder.getDescription() != null);
             paramsP.removeAll();
             List<Parameter> parameters = getFractalBuilder().getParameters();
             for (Parameter parameter : parameters) {
@@ -329,7 +325,7 @@ public final class FractalExplorer extends JFrame implements FractalUI {
             public void run() {
                 fractalExplorer.pack();
                 fractalExplorer.setVisible(true);
-                fractalExplorer.setFractal(FractalRegistry.getInstance().getFractals().iterator().next());
+                fractalExplorer.setFractal(FractalRegistry.getInstance().getFractalBuilders().iterator().next());
             }
         });
     }

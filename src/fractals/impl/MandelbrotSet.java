@@ -2,6 +2,8 @@ package fractals.impl;
 
 import fractals.RasterFractal;
 
+import java.math.BigDecimal;
+
 /**
  * Mandelbrot set implementation.
  */
@@ -62,15 +64,8 @@ public class MandelbrotSet extends RasterFractal {
      * @param maxIters maximum iterations
      */
 
-    public MandelbrotSet(String x, String y, String width, Integer maxIters) {
-        super(x, y, width, maxIters);
-    }
-
-    @Override
-    public String getDescription() {
-        return "<html><p><b>Mandelbrot set</b> is defined by the following iteration:</p>" + //
-                "<p></p><p><b>z<sub>n+1</sub> = z<sub>n</sub> * z<sub>n</sub> + c</b></p>" + //
-                "</html>";
+    public MandelbrotSet(BigDecimal x, BigDecimal y, BigDecimal width, BigDecimal angle, Integer maxIters) {
+        super(x, y, width, angle, maxIters);
     }
 
     @Override

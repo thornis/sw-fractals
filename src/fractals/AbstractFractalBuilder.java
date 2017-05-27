@@ -1,5 +1,7 @@
 package fractals;
 
+import fractals.util.Util;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -7,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class AbstractFractalBuilder<F extends AbstractFractal> implements FractalBuilder<F> {
+public abstract class AbstractFractalBuilder<F extends Fractal> implements FractalBuilder<F> {
     private List<Parameter> parameters;
 
     private final class ParameterImpl implements Parameter {
@@ -163,8 +165,18 @@ public abstract class AbstractFractalBuilder<F extends AbstractFractal> implemen
     }
 
     @Override
+    public String getName() {
+        return Util.getDescriptionFromClassName(getClass());
+    }
+
+    @Override
+    public String getDescription() {
+        return null;
+    }
+
+    @Override
     public String toString() {
-        return getClass().getName();
+        return getName();
     }
 
 }
