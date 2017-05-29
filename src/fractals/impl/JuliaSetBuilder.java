@@ -4,6 +4,8 @@ import fractals.*;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JuliaSetBuilder extends RasterFractalBuilder<JuliaSet> {
     @Parameter.Marker(order = "100", description = "Real const (Cr)")
@@ -70,6 +72,9 @@ public class JuliaSetBuilder extends RasterFractalBuilder<JuliaSet> {
     @Override
     public void init() {
         setMaxIters(200);
+        setX(BigDecimal.ZERO);
+        setY(BigDecimal.ZERO);
+        setWidth(new BigDecimal("4"));
         setCr(new BigDecimal("-0.400"));
         setCi(new BigDecimal("0.600"));
         setAngle(BigDecimal.ZERO);
@@ -87,14 +92,14 @@ public class JuliaSetBuilder extends RasterFractalBuilder<JuliaSet> {
                 "</html>";
     }
 
-//	@Override
-//	public List<UserTransition<? extends FractalBuilder>> getTransitions() {
-//		ArrayList<UserTransition<? extends FractalBuilder>> transitions = new ArrayList<>(super.getTransitions());
-//		transitions.add(new UserTransition<JuliaSetBuilder>(new ChangeCr(new BigDecimal("0.00125")), "CR+", "CR+"));
-//		transitions.add(new UserTransition<JuliaSetBuilder>(new ChangeCr(new BigDecimal("-0.00125")), "CR-", "CR-"));
-//		transitions.add(new UserTransition<JuliaSetBuilder>(new ChangeCi(new BigDecimal("0.00125")), "CI+", "CI+"));
-//		transitions.add(new UserTransition<JuliaSetBuilder>(new ChangeCi(new BigDecimal("-0.00125")), "CI-", "CI-"));
-//		return transitions;
-//	}
+	@Override
+	public List<UserTransition> getTransitions() {
+		ArrayList<UserTransition> transitions = new ArrayList<>(super.getTransitions());
+		transitions.add(new UserTransition(new ChangeCr(new BigDecimal("0.00125")), "CR+", "CR+"));
+		transitions.add(new UserTransition(new ChangeCr(new BigDecimal("-0.00125")), "CR-", "CR-"));
+		transitions.add(new UserTransition(new ChangeCi(new BigDecimal("0.00125")), "CI+", "CI+"));
+		transitions.add(new UserTransition(new ChangeCi(new BigDecimal("-0.00125")), "CI-", "CI-"));
+		return transitions;
+	}
 
 }
